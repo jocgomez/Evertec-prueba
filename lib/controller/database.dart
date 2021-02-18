@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:prueba_placeto_pay/model/user.dart';
 import 'package:prueba_placeto_pay/view/utils/globals.dart';
 

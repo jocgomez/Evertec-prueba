@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:prueba_placeto_pay/controller/database.dart';
-import 'package:prueba_placeto_pay/model/user.dart';
 import 'package:prueba_placeto_pay/view/components/buttonComponent.dart';
 import 'package:prueba_placeto_pay/view/utils/globals.dart';
 import 'package:prueba_placeto_pay/view/utils/style.dart';
@@ -29,162 +28,168 @@ class _LoginPageState extends State<LoginPage> {
           height: MediaQuery.of(context).size.height,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Container(
-                width: 130,
-                height: 130,
-                child: Image.asset('assets/ic_evertec.jpg'),
-                margin: EdgeInsets.all(50),
-              ),
-              ClipPath(
-                clipper: OvalTopBorderClipper(),
+              Expanded(
+                flex: 2,
                 child: Container(
-                    padding: EdgeInsets.only(
-                        left: 16.0, right: 16.0, top: 50.0, bottom: 20.0),
-                    color: StylesElements.colorPrimary,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        SizedBox(height: 10),
-                        TextField(
-                          keyboardType: TextInputType.text,
-                          textCapitalization: TextCapitalization.none,
-                          decoration: StylesElements.textFieldDecoration(
-                              "Nombre de usuario",
-                              true,
-                              Globals.strUserIcon,
-                              isUsernameIncomplete,
-                              "Escriba un nombre de usuario",
-                              () {}),
-                          onChanged: (value) {
-                            setState(() {
-                              username = value;
-                              isUsernameIncomplete = false;
-                            });
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          keyboardType: TextInputType.visiblePassword,
-                          obscureText: isPasswordInvisible,
-                          decoration: StylesElements.textFieldDecoration(
-                              "Contraseña",
-                              true,
-                              isPasswordInvisible
-                                  ? Globals.strPasswordIconInvisible
-                                  : Globals.strPasswordIconVisible,
-                              isPasswordIncomplete,
-                              "Escriba una contraseña", () {
-                            setState(() {
-                              isPasswordInvisible = !isPasswordInvisible;
-                            });
-                          }),
-                          onChanged: (value) {
-                            setState(() {
-                              password = value;
-                              isPasswordIncomplete = false;
-                            });
-                          },
-                        ),
-                        SizedBox(height: 20),
-                        BotonComponent(
-                          text: isRegisterClicked
-                              ? "Registrate"
-                              : "Iniciar sesión",
-                          color: Colors.white,
-                          borderColor: Colors.white,
-                          function: () {
-                            FocusScope.of(context).unfocus();
-
-                            setState(() {
-                              if (username.isNotEmpty) {
+                  width: 130,
+                  height: 130,
+                  child: Image.asset('assets/ic_evertec.jpg'),
+                  margin: EdgeInsets.all(50),
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: ClipPath(
+                  clipper: OvalTopBorderClipper(),
+                  child: Container(
+                      padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                      color: StylesElements.colorPrimary,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          SizedBox(height: 10),
+                          TextField(
+                            keyboardType: TextInputType.text,
+                            textCapitalization: TextCapitalization.none,
+                            decoration: StylesElements.textFieldDecoration(
+                                "Nombre de usuario",
+                                true,
+                                Globals.strUserIcon,
+                                isUsernameIncomplete,
+                                "Escriba un nombre de usuario",
+                                () {}),
+                            onChanged: (value) {
+                              setState(() {
+                                username = value;
                                 isUsernameIncomplete = false;
-                                if (password.isNotEmpty) {
-                                  isPasswordIncomplete = false;
+                              });
+                            },
+                          ),
+                          SizedBox(height: 10),
+                          TextFormField(
+                            keyboardType: TextInputType.visiblePassword,
+                            obscureText: isPasswordInvisible,
+                            decoration: StylesElements.textFieldDecoration(
+                                "Contraseña",
+                                true,
+                                isPasswordInvisible
+                                    ? Globals.strPasswordIconInvisible
+                                    : Globals.strPasswordIconVisible,
+                                isPasswordIncomplete,
+                                "Escriba una contraseña", () {
+                              setState(() {
+                                isPasswordInvisible = !isPasswordInvisible;
+                              });
+                            }),
+                            onChanged: (value) {
+                              setState(() {
+                                password = value;
+                                isPasswordIncomplete = false;
+                              });
+                            },
+                          ),
+                          SizedBox(height: 20),
+                          BotonComponent(
+                            text: isRegisterClicked
+                                ? "Registrarte"
+                                : "Iniciar sesión",
+                            color: Colors.white,
+                            borderColor: Colors.white,
+                            function: () {
+                              FocusScope.of(context).unfocus();
+
+                              setState(() {
+                                // Si el usuario y contraseña no estan vacíos se registra o ingresa segun el caso
+                                if (username.isNotEmpty &&
+                                    password.isNotEmpty) {
+                                  // En caso de estar en la parte de registro
                                   if (isRegisterClicked) {
+                                    // Se valida que el usuario no exista de la BD y se crea
                                     DBControll.createUserDB(username, password)
                                         .then((value) {
                                       if (value) {
-                                        Fluttertoast.showToast(
-                                          msg: "Bienvenido $username",
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          gravity: ToastGravity.BOTTOM,
-                                        );
+                                        Globals.toastMessage(
+                                            "¡Bienvenido! $username", false);
                                         Navigator.pushNamed(context, "splash");
                                       } else {
-                                        Fluttertoast.showToast(
-                                          msg:
-                                              "Ya existe una cuenta con este nombre de usuario",
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          gravity: ToastGravity.BOTTOM,
-                                        );
+                                        // En caso de que exista se da un mensaje de retroalimentación
+                                        Globals.toastMessage(
+                                            "Ya existe una cuenta con este nombre de usuario",
+                                            false);
                                       }
                                     });
                                   } else {
+                                    // Para ingresar, se lee el usuario de la BD
                                     DBControll.readUserDB(username, password)
                                         .then((value) {
+                                      // Si no existe, se da un mensaje de retroalimentación
                                       if (value["username"] == false ||
                                           value["password"] == false) {
-                                        Fluttertoast.showToast(
-                                          msg:
-                                              "No se encontró la cuenta, verifique el usuario ó la contraseña",
-                                          toastLength: Toast.LENGTH_LONG,
-                                          gravity: ToastGravity.BOTTOM,
-                                        );
+                                        Globals.toastMessage(
+                                            "No se encontró la cuenta, verifique el usuario ó la contraseña",
+                                            true);
+                                        // Si existe se pasa a la siguiente página
                                       } else if (!value.containsValue(false)) {
-                                        Fluttertoast.showToast(
-                                          msg: "Bienvenido $username",
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          gravity: ToastGravity.BOTTOM,
-                                        );
+                                        Globals.toastMessage(
+                                            "¡Bienvenido! $username", false);
                                         Navigator.pushNamed(context, "splash");
                                       }
                                     });
                                   }
                                 }
-                              }
-                              if (username.isEmpty) {
-                                isUsernameIncomplete = true;
-                              }
-                              if (password.isEmpty) {
-                                isPasswordIncomplete = true;
-                              }
-                            });
-                          },
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              isRegisterClicked
-                                  ? "Si ya tienes una cuenta, "
-                                  : "Si aún no tienes cuenta, ",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            FlatButton(
-                                onPressed: () {
-                                  setState(() {
-                                    isRegisterClicked = !isRegisterClicked;
-                                  });
-                                },
-                                child: Text(
-                                    isRegisterClicked
-                                        ? "ingresa aquí"
-                                        : "registrate aquí",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold)))
-                          ],
-                        )
-                      ],
-                    )),
+                                validateTextfield();
+                              });
+                            },
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                isRegisterClicked
+                                    ? "Si ya tienes una cuenta, "
+                                    : "Si aún no tienes cuenta, ",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              FlatButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      isRegisterClicked = !isRegisterClicked;
+                                    });
+                                  },
+                                  child: Text(
+                                      isRegisterClicked
+                                          ? "ingresa aquí"
+                                          : "registrate aquí",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold)))
+                            ],
+                          )
+                        ],
+                      )),
+                ),
               )
             ],
           ),
         ),
       ),
     );
+  }
+
+  // Se validan los campos de texto para mostrar o no el mensaje de error
+  void validateTextfield() {
+    if (username.isEmpty) {
+      isUsernameIncomplete = true;
+    } else {
+      isUsernameIncomplete = false;
+    }
+    if (password.isEmpty) {
+      isPasswordIncomplete = true;
+    } else {
+      isPasswordIncomplete = false;
+    }
   }
 }
