@@ -1,4 +1,4 @@
-package com.example.prueba_placeto_pay
+package com.placeto_pay.evertec
 
 import io.flutter.embedding.android.FlutterActivity
 
