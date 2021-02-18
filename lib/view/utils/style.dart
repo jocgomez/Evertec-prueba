@@ -11,10 +11,16 @@ class StylesElements {
   static Color colorFail = new Color(0xFFdc3545);
 
   // --- Text styles
+  // Texto en botones
   static TextStyle tsButtonOrange =
       new TextStyle(color: colorPrimary, fontWeight: FontWeight.bold);
   static TextStyle tsButtonWhite =
       new TextStyle(color: Colors.white, fontWeight: FontWeight.bold);
+  // Texto común
+  static TextStyle tsBoldOrange18 = new TextStyle(
+      color: colorPrimary, fontWeight: FontWeight.bold, fontSize: 18);
+  static TextStyle tsNormalWhite = new TextStyle(color: Colors.white);
+  static TextStyle tsNormalBlack = new TextStyle(color: colorBlack);
 
   // --- Iconos
   static final _icons = <String, IconData>{

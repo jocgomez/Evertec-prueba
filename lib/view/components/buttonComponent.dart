@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:prueba_placeto_pay/view/utils/style.dart';
 
-class BotonComponent extends StatelessWidget {
-  BotonComponent(
+class ButtonComponent extends StatelessWidget {
+  ButtonComponent(
       {Key key,
       @required this.color,
       @required this.text,

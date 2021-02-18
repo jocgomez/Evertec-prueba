@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:prueba_placeto_pay/controller/database.dart';
 import 'package:prueba_placeto_pay/view/components/buttonComponent.dart';
+import 'package:prueba_placeto_pay/view/components/toastComponent.dart';
 import 'package:prueba_placeto_pay/view/utils/globals.dart';
 import 'package:prueba_placeto_pay/view/utils/style.dart';
 
@@ -13,8 +13,10 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool isRegisterClicked = false;
+
   String username = "";
   bool isUsernameIncomplete = false;
+
   String password = "";
   bool isPasswordIncomplete = false;
   bool isPasswordInvisible = true;
@@ -92,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                             },
                           ),
                           SizedBox(height: 20),
-                          BotonComponent(
+                          ButtonComponent(
                             text: isRegisterClicked
                                 ? "Registrarte"
                                 : "Iniciar sesión",
@@ -111,12 +113,13 @@ class _LoginPageState extends State<LoginPage> {
                                     DBControll.createUserDB(username, password)
                                         .then((value) {
                                       if (value) {
-                                        Globals.toastMessage(
+                                        ToastComponent.toastMessage(
                                             "¡Bienvenido! $username", false);
-                                        Navigator.pushNamed(context, "splash");
+                                        Navigator.pushNamedAndRemoveUntil(
+                                            context, "home", (route) => false);
                                       } else {
                                         // En caso de que exista se da un mensaje de retroalimentación
-                                        Globals.toastMessage(
+                                        ToastComponent.toastMessage(
                                             "Ya existe una cuenta con este nombre de usuario",
                                             false);
                                       }
@@ -128,14 +131,15 @@ class _LoginPageState extends State<LoginPage> {
                                       // Si no existe, se da un mensaje de retroalimentación
                                       if (value["username"] == false ||
                                           value["password"] == false) {
-                                        Globals.toastMessage(
+                                        ToastComponent.toastMessage(
                                             "No se encontró la cuenta, verifique el usuario ó la contraseña",
                                             true);
                                         // Si existe se pasa a la siguiente página
                                       } else if (!value.containsValue(false)) {
-                                        Globals.toastMessage(
+                                        ToastComponent.toastMessage(
                                             "¡Bienvenido! $username", false);
-                                        Navigator.pushNamed(context, "splash");
+                                        Navigator.pushNamedAndRemoveUntil(
+                                            context, "home", (route) => false);
                                       }
                                     });
                                   }
