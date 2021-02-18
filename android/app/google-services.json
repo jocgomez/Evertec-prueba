@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "988384148041",
+    "project_id": "prueba-evertec-31df6",
+    "storage_bucket": "prueba-evertec-31df6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:988384148041:android:5ac8bdea240df7889e1d98",
+        "android_client_info": {
+          "package_name": "com.placeto_pay.evertec"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "988384148041-3svv6m15du8dioj9e4od2uavaqkljkir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZj7Z53tCy019IfONBtVPXgLTaHdFxHaA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "988384148041-3svv6m15du8dioj9e4od2uavaqkljkir.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
