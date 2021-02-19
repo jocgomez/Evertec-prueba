@@ -37,7 +37,10 @@ class StylesElements {
     'passwordInvisible': Icons.lock_open,
     'user': Icons.person_outline,
     'name': Icons.person_outline,
-    'phone': Icons.phone_android
+    'phone': Icons.phone_android,
+    'card': Icons.credit_card,
+    'date': Icons.date_range,
+    'cvv': Icons.security
   };
   static Icon getIcon(String nombreIcono) {
     return Icon(

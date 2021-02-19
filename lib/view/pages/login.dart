@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                                       if (value["username"] == false ||
                                           value["password"] == false) {
                                         ToastComponent.toastMessage(
-                                            "No se encontró la cuenta, verifique el usuario ó la contraseña",
+                                            "No se encontró la cuenta, verifique el usuario o la contraseña",
                                             true);
                                         // Si existe se pasa a la siguiente página
                                       } else if (!value.containsValue(false)) {

@@ -8,6 +8,9 @@ class Globals {
   static String strPasswordIconVisible = "passwordInvisible";
   static String strNameIcon = "name";
   static String strPhoneIcon = "phone";
+  static String strCardIcon = "card";
+  static String strDateIcon = "date";
+  static String strCvvIcon = "cvv";
 
   static User userInstance;
 }
