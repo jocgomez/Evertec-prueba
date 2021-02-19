@@ -1,11 +1,14 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:prueba_placeto_pay/model/card.dart';
+import 'package:prueba_placeto_pay/controller/database.dart';
+import 'package:prueba_placeto_pay/model/cardInformation.dart';
+import 'package:prueba_placeto_pay/model/personalInformation.dart';
 import 'package:prueba_placeto_pay/view/components/alertDialogComponent.dart';
 import 'package:prueba_placeto_pay/view/components/appbarComponent.dart';
 import 'package:prueba_placeto_pay/view/components/bottomNavigationComponent.dart';
 import 'package:prueba_placeto_pay/view/components/buttonComponent.dart';
+import 'package:prueba_placeto_pay/view/components/toastComponent.dart';
 import 'package:prueba_placeto_pay/view/utils/cardMonthInputFormatter.dart';
 import 'package:prueba_placeto_pay/view/utils/cardNumberInputFormatter.dart';
 import 'package:prueba_placeto_pay/view/utils/globals.dart';
@@ -38,6 +41,17 @@ class _HomePageState extends State<HomePage> {
       isCardCvvIncomplete = false;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppbarComponent(),
@@ -68,18 +82,24 @@ class _HomePageState extends State<HomePage> {
                 text: "Realizar pago",
                 borderColor: StylesElements.colorPrimary,
                 function: () {
+                  FocusScope.of(context).unfocus();
                   validatePersonalInformation();
                   validatePaymentInformation();
 
                   if (validateAllInformation()) {
-                    print({
-                      "nombre": name,
-                      "email": email,
-                      "celular": phone,
-                      "tarjeta": cardNumber,
-                      "mesExp": cardExpMonth,
-                      "añoExp": cardExpYear,
-                      "CVV": cardCvv
+                    PersonalInformation personalInformation =
+                        new PersonalInformation(name, email, phone);
+                    CreditCard creditCard = new CreditCard(
+                        cardNumber, cardExpMonth, cardExpYear, cardCvv);
+                    DBControll.createPaymentDB(personalInformation, creditCard)
+                        .then((value) {
+                      if (value) {
+                        ToastComponent.toastMessage(
+                            "Se ha generado el pago correctamente.", false);
+                      } else {
+                        ToastComponent.toastMessage(
+                            "No se ha podido generar el pago.", false);
+                      }
                     });
                   } else {
                     showDialog(
@@ -131,11 +151,11 @@ class _HomePageState extends State<HomePage> {
           keyboardType: TextInputType.text,
           textCapitalization: TextCapitalization.words,
           decoration: StylesElements.textFieldDecoration(
-              "Nombre y apellido",
+              "Nombre",
               true,
               Globals.strNameIcon,
               isNameIncomplete,
-              "Escriba un nombre y apellido.",
+              "Escriba un nombre.",
               () {}),
           onChanged: (value) {
             name = value;

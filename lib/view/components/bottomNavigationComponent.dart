@@ -44,11 +44,10 @@ class _BottomNavigationElementState extends State<BottomNavigationComponent> {
       widget.selectedIndex = index;
       switch (widget.selectedIndex) {
         case 0:
-          Navigator.pushNamedAndRemoveUntil(
-              context, 'home', (Route<dynamic> route) => false);
+          Navigator.pushReplacementNamed(context, 'home');
           break;
         case 1:
-          //Navigator.pushNamed(context, '');
+          Navigator.pushReplacementNamed(context, 'request');
           break;
         default:
       }
