@@ -16,9 +16,17 @@ class StylesElements {
       new TextStyle(color: colorPrimary, fontWeight: FontWeight.bold);
   static TextStyle tsButtonWhite =
       new TextStyle(color: Colors.white, fontWeight: FontWeight.bold);
-  // Texto común
+  // Texto bold
   static TextStyle tsBoldOrange18 = new TextStyle(
       color: colorPrimary, fontWeight: FontWeight.bold, fontSize: 18);
+  static TextStyle tsBoldBlack18 = new TextStyle(
+      color: colorBlack, fontWeight: FontWeight.bold, fontSize: 18);
+  static TextStyle tsBoldOrange =
+      new TextStyle(color: colorPrimary, fontWeight: FontWeight.bold);
+  static TextStyle tsBoldBlack =
+      new TextStyle(color: colorBlack, fontWeight: FontWeight.bold);
+  // Texto Normal
+  static TextStyle tsNormalOrange = new TextStyle(color: colorPrimary);
   static TextStyle tsNormalWhite = new TextStyle(color: Colors.white);
   static TextStyle tsNormalBlack = new TextStyle(color: colorBlack);
 
@@ -27,7 +35,9 @@ class StylesElements {
     'email': Icons.mail_outline,
     'passwordVisible': Icons.lock_outline,
     'passwordInvisible': Icons.lock_open,
-    'user': Icons.person_outline
+    'user': Icons.person_outline,
+    'name': Icons.person_outline,
+    'phone': Icons.phone_android
   };
   static Icon getIcon(String nombreIcono) {
     return Icon(

@@ -6,6 +6,8 @@ class Globals {
   static String strUserIcon = "user";
   static String strPasswordIconInvisible = "passwordVisible";
   static String strPasswordIconVisible = "passwordInvisible";
+  static String strNameIcon = "name";
+  static String strPhoneIcon = "phone";
 
   static User userInstance;
 }

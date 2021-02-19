@@ -12,14 +12,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool isRegisterClicked = false;
-
-  String username = "";
-  bool isUsernameIncomplete = false;
-
-  String password = "";
-  bool isPasswordIncomplete = false;
-  bool isPasswordInvisible = true;
+  String username = "", password = "";
+  bool isRegisterClicked = false,
+      isUsernameIncomplete = false,
+      isPasswordIncomplete = false,
+      isPasswordInvisible = true;
 
   @override
   Widget build(BuildContext context) {
