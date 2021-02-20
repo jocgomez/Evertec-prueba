@@ -29,6 +29,15 @@ class StylesElements {
   static TextStyle tsNormalOrange = new TextStyle(color: colorPrimary);
   static TextStyle tsNormalWhite = new TextStyle(color: Colors.white);
   static TextStyle tsNormalBlack = new TextStyle(color: colorBlack);
+  static TextStyle tsNormalGreenSucces = new TextStyle(color: colorSucces);
+  static TextStyle tsNormalOrangePending = new TextStyle(color: colorPending);
+  static TextStyle tsNormalRedFail = new TextStyle(color: colorFail);
+  static TextStyle tsBoldGreenSucces =
+      new TextStyle(color: colorSucces, fontWeight: FontWeight.bold);
+  static TextStyle tsBoldOrangePending =
+      new TextStyle(color: colorPending, fontWeight: FontWeight.bold);
+  static TextStyle tsBoldRedFail =
+      new TextStyle(color: colorFail, fontWeight: FontWeight.bold);
 
   // --- Iconos
   static final _icons = <String, IconData>{

@@ -119,8 +119,8 @@ class DBControll {
             value.data["cardExpYear"],
             value.data["cardCVV"]);
 
-        payment =
-            new Payment(value.documentID, personalInformation, creditCard);
+        payment = new Payment(value.documentID, personalInformation, creditCard,
+            value.data["state"]);
       }
     });
 

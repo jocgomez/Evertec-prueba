@@ -5,6 +5,7 @@ class Payment {
   String pid;
   PersonalInformation personalInformation;
   CreditCard creditCard;
+  String state;
 
-  Payment(this.pid, this.personalInformation, this.creditCard);
+  Payment(this.pid, this.personalInformation, this.creditCard, this.state);
 }
