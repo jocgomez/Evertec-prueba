@@ -18,7 +18,7 @@ class _RequestPageState extends State<RequestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarComponent(),
+      appBar: AppbarComponent(titulo: "Solicitudes"),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[

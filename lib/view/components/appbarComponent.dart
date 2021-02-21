@@ -3,13 +3,16 @@ import 'package:prueba_placeto_pay/view/components/alertDialogComponent.dart';
 import 'package:prueba_placeto_pay/view/utils/style.dart';
 
 class AppbarComponent extends StatelessWidget implements PreferredSizeWidget {
+  AppbarComponent({Key key, @required this.titulo}) : super(key: key);
+  final String titulo;
+
   @override
   Size get preferredSize => const Size.fromHeight(55);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text("Evertec - test", style: StylesElements.tsNormalWhite),
+      title: Text("Evertec - $titulo", style: StylesElements.tsNormalWhite),
       actions: <Widget>[
         IconButton(
           icon: Icon(

@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarComponent(),
+      appBar: AppbarComponent(titulo: "Formulario"),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -94,6 +94,7 @@ class _HomePageState extends State<HomePage> {
                     DBControll.createPaymentDB(personalInformation, creditCard)
                         .then((paymentInformation) {
                       if (paymentInformation != null) {
+                        Navigator.pushNamed(context, "splash");
                         WebService.processTransactionPost(
                             paymentInformation, context);
                         ToastComponent.toastMessage(

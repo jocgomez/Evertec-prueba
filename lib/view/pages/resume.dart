@@ -9,8 +9,15 @@ class ResumePage extends StatefulWidget {
 class _ResumePageState extends State<ResumePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppbarComponent(),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context);
+        Navigator.pop(context);
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppbarComponent(titulo: "Resumen"),
+      ),
     );
   }
 }

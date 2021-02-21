@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:prueba_placeto_pay/model/WebService/processTransaction.dart';
 import 'package:prueba_placeto_pay/model/cardInformation.dart';
 import 'package:prueba_placeto_pay/model/payment.dart';
 import 'package:prueba_placeto_pay/model/personalInformation.dart';
@@ -164,6 +165,7 @@ class DBControll {
     }); */
   }
 
+  // Se elimina el pago realizado
   static void deletePaymentInformation(String pid) {
     Firestore.instance
         .collection("users")
@@ -173,6 +175,7 @@ class DBControll {
         .delete();
   }
 
+  // Se actualiza el estado del pago realizado
   static void updateStatePaymentInformation(String pid, String state) {
     values["state"] = state;
     Firestore.instance
@@ -183,6 +186,7 @@ class DBControll {
         .setData(values, merge: true);
   }
 
+  // Se actualiza la información personal y financiera del pago
   static void updatePaymentInformation(Payment paymentInformation) {
     // Inicialización de los valores para actualizar el pago
     PersonalInformation personalInformation =
@@ -204,5 +208,34 @@ class DBControll {
         .collection("payments")
         .document(paymentInformation.pid)
         .setData(values, merge: true);
+  }
+
+  // Se actualiza el pago para agregar el resultado del proceso de transacción
+  static Future<bool> updatePaymentWithTransactionResponse(
+      String pid, ProcessTransactionResponse processTransactionResponse) async {
+    // Inicialización de los valores actualizar la info del pago con la respuesta del servicio
+    values["transactionDate"] = processTransactionResponse.transactionDate;
+    values["reference"] = processTransactionResponse.reference;
+    values["paymentMethod"] = processTransactionResponse.paymentMethod;
+    values["franchiseName"] = processTransactionResponse.franchiseName;
+    values["issuerName"] = processTransactionResponse.issuerName;
+    values["total"] = processTransactionResponse.total;
+    values["currency"] = processTransactionResponse.currency;
+    values["receipt"] = processTransactionResponse.receipt;
+    values["refunded"] = processTransactionResponse.refunded;
+    values["provider"] = processTransactionResponse.provider;
+    values["authorization"] = processTransactionResponse.authorization;
+    values["message"] = processTransactionResponse.message;
+    bool isTransactionResponseInserted = false;
+
+    Firestore.instance
+        .collection("users")
+        .document(Globals.userInstance.uid)
+        .collection("payments")
+        .document(processTransactionResponse.paymentInformation.pid)
+        .setData(values, merge: true)
+        .then((value) => isTransactionResponseInserted = true);
+
+    return isTransactionResponseInserted;
   }
 }

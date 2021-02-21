@@ -31,11 +31,12 @@ class CardComponent extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.0),
         onTap: () {
           FocusScope.of(context).unfocus();
-          //WebService.processTransactionPost(this.paymentInformation, context);
-          Navigator.pushNamed(context, "resume");
+          Navigator.pushNamed(context, "splash");
+          WebService.processTransactionPost(this.paymentInformation, context);
+          //Navigator.pushNamed(context, "resume");
         },
         child: Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.all(12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -63,23 +64,29 @@ class CardComponent extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 5),
-              Text(
-                CreditCard.cardNumberFormat(cardNumber),
-                style: StylesElements.tsNormalBlack,
+              Padding(
+                padding: EdgeInsets.only(left: 30),
+                child: Text(
+                  CreditCard.cardNumberFormat(cardNumber),
+                  style: StylesElements.tsNormalBlack,
+                ),
               ),
               SizedBox(height: 4),
-              Row(
-                children: <Widget>[
-                  Text(
-                    "$cardExpMonth/$cardExpYear",
-                    style: StylesElements.tsNormalBlack,
-                  ),
-                  SizedBox(width: 75),
-                  Text(
-                    cardCVV,
-                    style: StylesElements.tsNormalBlack,
-                  ),
-                ],
+              Padding(
+                padding: EdgeInsets.only(left: 30),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      "$cardExpMonth/$cardExpYear",
+                      style: StylesElements.tsNormalBlack,
+                    ),
+                    SizedBox(width: 75),
+                    Text(
+                      cardCVV,
+                      style: StylesElements.tsNormalBlack,
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 10),
               Row(
@@ -96,19 +103,26 @@ class CardComponent extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(name, style: StylesElements.tsNormalBlack),
-                      SizedBox(height: 4),
-                      Row(
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 30, right: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(email, style: StylesElements.tsNormalBlack),
-                          SizedBox(width: 30),
-                          Text(phone, style: StylesElements.tsNormalBlack)
+                          Text(name, style: StylesElements.tsNormalBlack),
+                          SizedBox(height: 4),
+                          Wrap(
+                            alignment: WrapAlignment.spaceBetween,
+                            direction: Axis.horizontal,
+                            spacing: 15,
+                            children: <Widget>[
+                              Text(email, style: StylesElements.tsNormalBlack),
+                              Text(phone, style: StylesElements.tsNormalBlack)
+                            ],
+                          ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
                   IconButton(
                       icon: StylesElements.getIcon(Globals.strRemoveIcon),
