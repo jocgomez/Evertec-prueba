@@ -12,8 +12,9 @@ class Globals {
   static String strDateIcon = "date";
   static String strCvvIcon = "cvv";
   static String strRemoveIcon = "remove";
+  static String strReceiptIcon = "receipt";
 
-  static String strSuccesState = "Aprobada";
+  static String strSuccesState = "Aprobado";
   static String strPendingState = "Pendiente";
   static String strRejectedState = "Rechazado";
 

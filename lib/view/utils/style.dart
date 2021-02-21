@@ -50,7 +50,8 @@ class StylesElements {
     'card': Icons.credit_card,
     'date': Icons.date_range,
     'cvv': Icons.security,
-    'remove': Icons.delete_forever
+    'remove': Icons.delete_forever,
+    'receipt': Icons.receipt
   };
   static Icon getIcon(String nombreIcono) {
     return Icon(

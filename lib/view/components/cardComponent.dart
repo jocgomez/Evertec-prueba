@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:prueba_placeto_pay/controller/database.dart';
 import 'package:prueba_placeto_pay/controller/webService.dart';
+import 'package:prueba_placeto_pay/model/WebService/processTransaction.dart';
 import 'package:prueba_placeto_pay/model/cardInformation.dart';
 import 'package:prueba_placeto_pay/model/payment.dart';
 import 'package:prueba_placeto_pay/view/components/alertDialogComponent.dart';
+import 'package:prueba_placeto_pay/view/pages/resume.dart';
 import 'package:prueba_placeto_pay/view/utils/globals.dart';
 import 'package:prueba_placeto_pay/view/utils/style.dart';
 
@@ -30,10 +32,23 @@ class CardComponent extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(8.0),
         onTap: () {
-          FocusScope.of(context).unfocus();
+          //FocusScope.of(context).unfocus();
           Navigator.pushNamed(context, "splash");
-          WebService.processTransactionPost(this.paymentInformation, context);
-          //Navigator.pushNamed(context, "resume");
+          /* Navigator.pushNamed(context, "splash"); */
+          //WebService.processTransactionPost(this.paymentInformation, context);
+          DBControll.readPaymentWithTransactionResponse(
+                  this.paymentInformation.pid)
+              .then((processTransactionResponse) {
+            if (processTransactionResponse != null) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ResumePage(
+                      processTransactionResponse: processTransactionResponse,
+                    ),
+                  ));
+            }
+          });
         },
         child: Padding(
           padding: const EdgeInsets.all(12.0),

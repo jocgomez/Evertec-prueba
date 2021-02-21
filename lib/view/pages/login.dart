@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:prueba_placeto_pay/controller/database.dart';
 import 'package:prueba_placeto_pay/view/components/buttonComponent.dart';
@@ -63,6 +64,9 @@ class _LoginPageState extends State<LoginPage> {
                           TextField(
                             keyboardType: TextInputType.text,
                             textCapitalization: TextCapitalization.none,
+                            inputFormatters: [
+                              BlacklistingTextInputFormatter(" "),
+                            ],
                             decoration: StylesElements.textFieldDecoration(
                                 "Nombre de usuario",
                                 true,

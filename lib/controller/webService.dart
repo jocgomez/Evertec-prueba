@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -8,6 +9,7 @@ import 'package:prueba_placeto_pay/model/WebService/processTransaction.dart';
 import 'package:prueba_placeto_pay/model/cardInformation.dart';
 import 'package:prueba_placeto_pay/model/payment.dart';
 import 'package:prueba_placeto_pay/model/personalInformation.dart';
+import 'package:prueba_placeto_pay/view/pages/resume.dart';
 import 'package:prueba_placeto_pay/view/utils/globals.dart';
 
 class WebService {
@@ -33,18 +35,23 @@ class WebService {
                     ? Globals.strSuccesState
                     : "";
 
-        print(bodyDecode);
+        //print(bodyDecode);
         print(state);
         // Se crea un objeto con la información obtenida como respuesta
         paymentInformation.state = state;
         ProcessTransactionResponse processTransactionResponse =
             createTransactionResponseObj(bodyDecode, paymentInformation);
 
-        // Se actualiza el estado y la información adicional del pago
+        // Se actualiza el estado y la información adicional del pago en la BD
         DBControll.updateStatePaymentInformation(paymentInformation.pid, state);
         DBControll.updatePaymentWithTransactionResponse(
             paymentInformation.pid, processTransactionResponse);
-        Navigator.pushNamed(context, "resume");
+        /* Navigator.pushNamed(context, "resume"); */
+        MaterialPageRoute(
+          builder: (context) => ResumePage(
+            processTransactionResponse: processTransactionResponse,
+          ),
+        );
       }
     });
   }
@@ -75,6 +82,9 @@ class WebService {
         paymentInformation.creditCard.cardExpYear,
         paymentInformation.creditCard.cardCVV);
 
+    // Valor aleatorio para el precio entre 50000 y 100000
+    Random random = new Random();
+    int randomPrice = random.nextInt(100000) + 50000;
     // Se crea el objeto JSON que recibe el servicio
     dynamic body = jsonEncode(<String, dynamic>{
       'auth': <String, dynamic>{
@@ -99,7 +109,7 @@ class WebService {
                     {"kind": "subtotal", "amount": 40}
                   ], */
           "currency": "COP",
-          "total": 50000
+          "total": randomPrice
         }
       },
       /* "ipAddress": "127.0.0.1", */

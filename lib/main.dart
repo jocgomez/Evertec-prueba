@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'Evertec test',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        iconTheme: IconThemeData(color: StylesElements.colorPrimary),
         primaryColor: StylesElements.colorPrimary,
         cursorColor: StylesElements.colorPrimary,
         visualDensity: VisualDensity.adaptivePlatformDensity,

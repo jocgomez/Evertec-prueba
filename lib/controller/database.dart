@@ -238,4 +238,47 @@ class DBControll {
 
     return isTransactionResponseInserted;
   }
+
+  // Se actualiza el pago para agregar el resultado del proceso de transacción
+  static Future<ProcessTransactionResponse> readPaymentWithTransactionResponse(
+      String pid) async {
+    ProcessTransactionResponse processTransactionResponse;
+
+    await Firestore.instance
+        .collection("users")
+        .document(Globals.userInstance.uid)
+        .collection("payments")
+        .document(pid)
+        .get()
+        .then((value) {
+      if (value.exists) {
+        PersonalInformation personalInformation = new PersonalInformation(
+            value.data["name"], value.data["email"], value.data["phone"]);
+        CreditCard creditCard = new CreditCard(
+            value.data["cardNumber"],
+            value.data["cardExpMonth"],
+            value.data["cardExpYear"],
+            value.data["cardCVV"]);
+        Payment payment = new Payment(value.documentID, personalInformation,
+            creditCard, value.data["state"]);
+
+        processTransactionResponse = new ProcessTransactionResponse(
+            value.data["transactionDate"],
+            value.data["reference"],
+            value.data["paymentMethod"],
+            value.data["franchiseName"],
+            value.data["issuerName"],
+            value.data["total"],
+            value.data["currency"],
+            value.data["receipt"],
+            value.data["refunded"],
+            value.data["provider"],
+            value.data["authorization"],
+            payment,
+            value.data["message"]);
+      }
+    });
+
+    return processTransactionResponse;
+  }
 }

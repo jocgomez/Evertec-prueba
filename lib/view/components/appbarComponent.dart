@@ -12,6 +12,9 @@ class AppbarComponent extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      iconTheme: IconThemeData(
+        color: Colors.white, //change your color here
+      ),
       title: Text("Evertec - $titulo", style: StylesElements.tsNormalWhite),
       actions: <Widget>[
         IconButton(

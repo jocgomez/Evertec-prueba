@@ -29,4 +29,30 @@ class ProcessTransactionResponse {
       this.authorization,
       this.paymentInformation,
       this.message);
+
+  addPointValue(String val) {
+    var priceLong = val;
+
+    if (priceLong.length == 4) {
+      priceLong = priceLong.substring(0, 1) +
+          "." +
+          priceLong.substring(1, priceLong.length);
+    } else if (priceLong.length == 5) {
+      priceLong = priceLong.substring(0, 2) +
+          "." +
+          priceLong.substring(2, priceLong.length);
+    } else if (priceLong.length == 6) {
+      priceLong = priceLong.substring(0, 3) +
+          "." +
+          priceLong.substring(3, priceLong.length);
+    } else if (priceLong.length == 7) {
+      priceLong = priceLong.substring(0, 1) +
+          "." +
+          priceLong.substring(1, 4) +
+          "." +
+          priceLong.substring(4, priceLong.length);
+    }
+
+    return priceLong;
+  }
 }
