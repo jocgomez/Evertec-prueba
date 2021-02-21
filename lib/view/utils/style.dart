@@ -49,7 +49,8 @@ class StylesElements {
     'phone': Icons.phone_android,
     'card': Icons.credit_card,
     'date': Icons.date_range,
-    'cvv': Icons.security
+    'cvv': Icons.security,
+    'remove': Icons.delete_forever
   };
   static Icon getIcon(String nombreIcono) {
     return Icon(

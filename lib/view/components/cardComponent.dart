@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:prueba_placeto_pay/controller/database.dart';
+import 'package:prueba_placeto_pay/controller/webService.dart';
 import 'package:prueba_placeto_pay/model/cardInformation.dart';
 import 'package:prueba_placeto_pay/model/payment.dart';
+import 'package:prueba_placeto_pay/view/components/alertDialogComponent.dart';
 import 'package:prueba_placeto_pay/view/utils/globals.dart';
 import 'package:prueba_placeto_pay/view/utils/style.dart';
 
@@ -12,10 +15,10 @@ class CardComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String state = this.paymentInformation.state;
-    int cardNumber = this.paymentInformation.creditCard.cardNumber;
-    int cardExpMonth = this.paymentInformation.creditCard.cardExpMonth;
-    int cardExpYear = this.paymentInformation.creditCard.cardExpYear;
-    int cardCVV = this.paymentInformation.creditCard.cardCVV;
+    String cardNumber = this.paymentInformation.creditCard.cardNumber;
+    String cardExpMonth = this.paymentInformation.creditCard.cardExpMonth;
+    String cardExpYear = this.paymentInformation.creditCard.cardExpYear;
+    String cardCVV = this.paymentInformation.creditCard.cardCVV;
     String name = this.paymentInformation.personalInformation.name;
     String email = this.paymentInformation.personalInformation.email;
     String phone = this.paymentInformation.personalInformation.phone;
@@ -28,9 +31,11 @@ class CardComponent extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.0),
         onTap: () {
           FocusScope.of(context).unfocus();
+          //WebService.processTransactionPost(this.paymentInformation, context);
+          Navigator.pushNamed(context, "resume");
         },
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(15.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -43,7 +48,7 @@ class CardComponent extends StatelessWidget {
                       SizedBox(width: 5),
                       Text(
                         "Información de la tarjeta",
-                        style: StylesElements.tsNormalOrange,
+                        style: StylesElements.tsBoldOrange,
                       ),
                     ],
                   ),
@@ -59,19 +64,19 @@ class CardComponent extends StatelessWidget {
               ),
               SizedBox(height: 5),
               Text(
-                CreditCard.cardNumberFormat(cardNumber.toString()),
+                CreditCard.cardNumberFormat(cardNumber),
                 style: StylesElements.tsNormalBlack,
               ),
               SizedBox(height: 4),
               Row(
                 children: <Widget>[
                   Text(
-                    "${cardExpMonth.toString()}/${cardExpYear.toString()}",
+                    "$cardExpMonth/$cardExpYear",
                     style: StylesElements.tsNormalBlack,
                   ),
                   SizedBox(width: 75),
                   Text(
-                    cardCVV.toString(),
+                    cardCVV,
                     style: StylesElements.tsNormalBlack,
                   ),
                 ],
@@ -83,18 +88,34 @@ class CardComponent extends StatelessWidget {
                   SizedBox(width: 4),
                   Text(
                     "Información personal",
-                    style: StylesElements.tsNormalOrange,
+                    style: StylesElements.tsBoldOrange,
                   )
                 ],
               ),
               SizedBox(height: 5),
-              Text(name, style: StylesElements.tsNormalBlack),
-              SizedBox(height: 4),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(email, style: StylesElements.tsNormalBlack),
-                  SizedBox(width: 30),
-                  Text(phone, style: StylesElements.tsNormalBlack)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(name, style: StylesElements.tsNormalBlack),
+                      SizedBox(height: 4),
+                      Row(
+                        children: <Widget>[
+                          Text(email, style: StylesElements.tsNormalBlack),
+                          SizedBox(width: 30),
+                          Text(phone, style: StylesElements.tsNormalBlack)
+                        ],
+                      ),
+                    ],
+                  ),
+                  IconButton(
+                      icon: StylesElements.getIcon(Globals.strRemoveIcon),
+                      color: Colors.red,
+                      visualDensity: VisualDensity.compact,
+                      onPressed: () => showDialogDeletePayment(
+                          context, this.paymentInformation.pid))
                 ],
               )
             ],
@@ -102,5 +123,26 @@ class CardComponent extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void showDialogDeletePayment(BuildContext context, String pid) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialogComponent(
+              titulo: "Eliminar pago",
+              contenido: Text(
+                "¿Está seguro que desea eliminar el pago? Perderá toda la información del mismo y no podrá recuperarla.",
+                style: StylesElements.tsNormalBlack,
+              ),
+              dosBotones: true,
+              textoBotonPositivo: "Aceptar",
+              textoBotonNegativo: "Cancelar",
+              funcionPositiva: () {
+                DBControll.deletePaymentInformation(pid);
+                Navigator.pop(context);
+              },
+              funcionNegativa: () => Navigator.pop(context));
+        });
   }
 }

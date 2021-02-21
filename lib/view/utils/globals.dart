@@ -11,10 +11,16 @@ class Globals {
   static String strCardIcon = "card";
   static String strDateIcon = "date";
   static String strCvvIcon = "cvv";
+  static String strRemoveIcon = "remove";
 
-  static String strSuccesState = "Realizado";
+  static String strSuccesState = "Aprobada";
   static String strPendingState = "Pendiente";
   static String strRejectedState = "Rechazado";
+
+  // Información POST
+  // Auth
+  static String login = "6dd490faf9cb87a9862245da41170ff2";
+  static String tranKey = "024h1IlD";
 
   static User userInstance;
 }

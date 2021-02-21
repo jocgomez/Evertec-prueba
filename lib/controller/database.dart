@@ -71,7 +71,8 @@ class DBControll {
 
   // Crud para los pagos realizados
   // Create pago realizado
-  static Future<bool> createPaymentDB(PersonalInformation personalInformation,
+  static Future<Payment> createPaymentDB(
+      PersonalInformation personalInformation,
       CreditCard creditCardInformation) async {
     // Inicialización de los valores para crear un nuevo pago
     values["name"] = personalInformation.name;
@@ -84,6 +85,7 @@ class DBControll {
     values["state"] = "";
     bool isCreditCardCreated = false;
 
+    Payment paymentInformation;
     // Se inicializa un documento en la colección de pagos, dentro de usuarios
     DocumentReference cardsDocument = Firestore.instance
         .collection("users")
@@ -96,7 +98,12 @@ class DBControll {
       isCreditCardCreated = true;
     });
 
-    return isCreditCardCreated;
+    if (isCreditCardCreated) {
+      paymentInformation = new Payment(cardsDocument.documentID,
+          personalInformation, creditCardInformation, "");
+    }
+
+    return paymentInformation;
   }
 
   // Read pagos realizados
@@ -155,5 +162,47 @@ class DBControll {
         });
       }
     }); */
+  }
+
+  static void deletePaymentInformation(String pid) {
+    Firestore.instance
+        .collection("users")
+        .document(Globals.userInstance.uid)
+        .collection("payments")
+        .document(pid)
+        .delete();
+  }
+
+  static void updateStatePaymentInformation(String pid, String state) {
+    values["state"] = state;
+    Firestore.instance
+        .collection("users")
+        .document(Globals.userInstance.uid)
+        .collection("payments")
+        .document(pid)
+        .setData(values, merge: true);
+  }
+
+  static void updatePaymentInformation(Payment paymentInformation) {
+    // Inicialización de los valores para actualizar el pago
+    PersonalInformation personalInformation =
+        paymentInformation.personalInformation;
+    CreditCard creditCardInformation = paymentInformation.creditCard;
+
+    values["name"] = personalInformation.name;
+    values["email"] = personalInformation.email;
+    values["phone"] = personalInformation.phone;
+    values["cardNumber"] = creditCardInformation.cardNumber;
+    values["cardExpMonth"] = creditCardInformation.cardExpMonth;
+    values["cardExpYear"] = creditCardInformation.cardExpYear;
+    values["cardCVV"] = creditCardInformation.cardCVV;
+    values["state"] = "";
+
+    Firestore.instance
+        .collection("users")
+        .document(Globals.userInstance.uid)
+        .collection("payments")
+        .document(paymentInformation.pid)
+        .setData(values, merge: true);
   }
 }

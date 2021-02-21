@@ -2,6 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:prueba_placeto_pay/controller/database.dart';
+import 'package:prueba_placeto_pay/controller/webService.dart';
 import 'package:prueba_placeto_pay/model/cardInformation.dart';
 import 'package:prueba_placeto_pay/model/personalInformation.dart';
 import 'package:prueba_placeto_pay/view/components/alertDialogComponent.dart';
@@ -33,7 +34,7 @@ class _HomePageState extends State<HomePage> {
 
   // Variables para el medio de pago
   String cardCVVErrorMessage = "Escriba el CVV de la terjeta.";
-  int cardNumber, cardExpMonth, cardExpYear, cardCvv;
+  String cardNumber = "", cardExpMonth = "", cardExpYear = "", cardCvv = "";
   bool isCardNumberIncomplete = false,
       iscardMonthIncomplete = false,
       isCardYearIncomplete = false,
@@ -91,8 +92,10 @@ class _HomePageState extends State<HomePage> {
                     CreditCard creditCard = new CreditCard(
                         cardNumber, cardExpMonth, cardExpYear, cardCvv);
                     DBControll.createPaymentDB(personalInformation, creditCard)
-                        .then((value) {
-                      if (value) {
+                        .then((paymentInformation) {
+                      if (paymentInformation != null) {
+                        WebService.processTransactionPost(
+                            paymentInformation, context);
                         ToastComponent.toastMessage(
                             "Se ha generado el pago correctamente.", false);
                       } else {
@@ -240,7 +243,7 @@ class _HomePageState extends State<HomePage> {
                 validateFieldInformation(value, isCardNumberIncomplete);
             if (value.isNotEmpty) {
               String valueClean = value.replaceAll(" ", "");
-              cardNumber = int.parse(valueClean);
+              cardNumber = valueClean;
             } else {
               cardNumber = null;
             }
@@ -272,16 +275,16 @@ class _HomePageState extends State<HomePage> {
             try {
               // Se separa el / y se obtiene mes y año de expiración
               List<String> splitDate = value.split(new RegExp(r'(\/)'));
-              cardExpMonth = int.parse(splitDate[0]);
-              cardExpYear = int.parse(splitDate[1]);
+              cardExpMonth = splitDate[0];
+              cardExpYear = splitDate[1];
             } catch (e) {}
 
             // Se valida la información para mostrar o no mensaje de error
             // Fecha y año deben estar completos para no mostrarlo
             iscardMonthIncomplete =
-                validateIntInformation(cardExpMonth, iscardMonthIncomplete);
+                validateFieldInformation(cardExpMonth, iscardMonthIncomplete);
             isCardYearIncomplete =
-                validateIntInformation(cardExpYear, isCardYearIncomplete);
+                validateFieldInformation(cardExpYear, isCardYearIncomplete);
 
             // Si fecha o año esta incompleto, se muestra error
             if (isCardYearIncomplete == false &&
@@ -311,7 +314,7 @@ class _HomePageState extends State<HomePage> {
             isCardCvvIncomplete =
                 validateFieldInformation(value, isCardCvvIncomplete);
             if (value.isNotEmpty) {
-              cardCvv = int.parse(value);
+              cardCvv = value;
             } else {
               cardCvv = null;
             }
@@ -331,12 +334,13 @@ class _HomePageState extends State<HomePage> {
   // Se valida la información de medio de pago, que no se encuentre vacia
   void validatePaymentInformation() {
     isCardNumberIncomplete =
-        validateIntInformation(cardNumber, isCardNumberIncomplete);
+        validateFieldInformation(cardNumber, isCardNumberIncomplete);
     iscardMonthIncomplete =
-        validateIntInformation(cardExpMonth, iscardMonthIncomplete);
+        validateFieldInformation(cardExpMonth, iscardMonthIncomplete);
     isCardYearIncomplete =
-        validateIntInformation(cardExpYear, iscardMonthIncomplete);
-    isCardCvvIncomplete = validateIntInformation(cardCvv, isCardCvvIncomplete);
+        validateFieldInformation(cardExpYear, iscardMonthIncomplete);
+    isCardCvvIncomplete =
+        validateFieldInformation(cardCvv, isCardCvvIncomplete);
 
     // Se valida que el mes y año de expiración esten completos
     if (iscardMonthIncomplete || isCardYearIncomplete) {

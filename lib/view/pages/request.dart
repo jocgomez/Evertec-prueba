@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:prueba_placeto_pay/controller/database.dart';
-import 'package:prueba_placeto_pay/model/WebService/auth.dart';
 import 'package:prueba_placeto_pay/model/cardInformation.dart';
 import 'package:prueba_placeto_pay/model/payment.dart';
 import 'package:prueba_placeto_pay/model/personalInformation.dart';
@@ -67,6 +66,7 @@ class _RequestPageState extends State<RequestPage> {
                         personalInformation,
                         creditCardInformation,
                         doc.data["state"]);
+
                     return CardComponent(
                         paymentInformation: paymentInformation);
                   });
