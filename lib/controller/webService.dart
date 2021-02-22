@@ -35,8 +35,6 @@ class WebService {
                     ? Globals.strSuccesState
                     : "";
 
-        //print(bodyDecode);
-        print(state);
         // Se crea un objeto con la información obtenida como respuesta
         paymentInformation.state = state;
         ProcessTransactionResponse processTransactionResponse =
@@ -46,12 +44,15 @@ class WebService {
         DBControll.updateStatePaymentInformation(paymentInformation.pid, state);
         DBControll.updatePaymentWithTransactionResponse(
             paymentInformation.pid, processTransactionResponse);
-        /* Navigator.pushNamed(context, "resume"); */
-        MaterialPageRoute(
-          builder: (context) => ResumePage(
-            processTransactionResponse: processTransactionResponse,
-          ),
-        );
+        try {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ResumePage(
+                  processTransactionResponse: processTransactionResponse,
+                ),
+              ));
+        } catch (e) {}
       }
     });
   }
@@ -83,9 +84,9 @@ class WebService {
         paymentInformation.creditCard.cardCVV);
 
     // Valor aleatorio para el precio entre 50000 y 100000
-    Random random = new Random();
+    var random = new Random();
     int randomPrice = random.nextInt(100000) + 50000;
-    // Se crea el objeto JSON que recibe el servicio
+    // Se crea el cuerpo del objeto JSON que recibe el servicio
     dynamic body = jsonEncode(<String, dynamic>{
       'auth': <String, dynamic>{
         'login': '${authWS.login}',
@@ -96,27 +97,8 @@ class WebService {
       'locale': 'es_CO',
       "payment": {
         "reference": "TEST_20171108_144400",
-        /* "description":
-                    "Ipsam quia sunt dolore minus atque blanditiis corrupti.", */
-        "amount": {
-          /* "taxes": [
-                    {"kind": "ice", "amount": 4.8, "base": 40},
-                    {"kind": "valueAddedTax", "amount": 7.6, "base": 40}
-                  ],
-                  "details": [
-                    {"kind": "shipping", "amount": 2},
-                    {"kind": "tip", "amount": 2},
-                    {"kind": "subtotal", "amount": 40}
-                  ], */
-          "currency": "COP",
-          "total": randomPrice
-        }
+        "amount": {"currency": "COP", "total": randomPrice}
       },
-      /* "ipAddress": "127.0.0.1", */
-      /* "userAgent": "Mozilla/5.0 USER_AGENT HERE", */
-      /* "additional": {
-                "SOME_ADDITIONAL": "http://example.com/yourcheckout",
-              }, */
       'instrument': <String, dynamic>{
         'card': {
           'number': '${creditCardInformation.cardNumber.toString()}',
@@ -124,46 +106,33 @@ class WebService {
           'expirationYear': '${creditCardInformation.cardExpYear.toString()}',
           'cvv': '${creditCardInformation.cardCVV.toString()}'
         },
-        /* "credit": {
-                  "code": "1",
-                  "type": "02",
-                  "groupCode": "P",
-                  "installment": "24"
-                }, */
-        /* "otp": "a8ecc59c2510a8ae27e1724ebf4647b5" */
       },
       'payer': <String, dynamic>{
-        /* "document": "8467451900",
-                "documentType": "CC", */
         'name': '${personalInformation.name}',
-        /* "surname": "Wisozk", */
         'email': '${personalInformation.email}',
         'mobile': '${personalInformation.phone}'
       },
-      /* "buyer": {
-                "document": "8467451900",
-                "documentType": "CC",
-                "name": "Miss Delia Schamberger Sr.",
-                "surname": "Wisozk",
-                "email": "tesst@gmail.com",
-                "mobile": "3006108300"
-              } */
     });
     //print(body);
     return body;
   }
 
   static ProcessTransactionResponse createTransactionResponseObj(
-      bodyDecode, Payment paymentInformation) {
+      dynamic bodyDecode, Payment paymentInformation) {
+    // A partir de la información retornada por el servicio se crea un objeto de tipo
+    // Process transaction
     String transactionDate = bodyDecode["transactionDate"];
     String reference = bodyDecode["reference"];
     String paymentMethod = bodyDecode["paymentMethod"];
     String franchiseName = bodyDecode["franchiseName"];
     String issuerName = bodyDecode["issuerName"].toString();
-    int total = bodyDecode["amount"]["total"];
+    int total = bodyDecode["amount"]["total"] == null
+        ? 0
+        : bodyDecode["amount"]["total"];
     String currency = bodyDecode["amount"]["currency"];
     String receipt = bodyDecode["receipt"].toString();
-    bool refunded = bodyDecode["refunded"];
+    bool refunded =
+        bodyDecode["refunded"] == null ? false : bodyDecode["refunded"];
     String provider = bodyDecode["provider"];
     String authorization = bodyDecode["authorization"];
     String message = bodyDecode["status"]["message"];

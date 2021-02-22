@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class StylesElements {
   // --- Colores
@@ -6,9 +7,9 @@ class StylesElements {
   static Color colorSecondary = new Color(0xFF0DD3AD);
   static Color colorBlack = new Color(0xFF333333);
 
-  static Color colorSucces = new Color(0xFF28a745);
+  static Color colorSucces = new Color(0xFF62B575);
   static Color colorPending = new Color(0xFFffc107);
-  static Color colorFail = new Color(0xFFdc3545);
+  static Color colorFail = new Color(0xFFE0514D);
 
   // --- Text styles
   // Texto en botones
@@ -51,7 +52,10 @@ class StylesElements {
     'date': Icons.date_range,
     'cvv': Icons.security,
     'remove': Icons.delete_forever,
-    'receipt': Icons.receipt
+    'receipt': Icons.receipt,
+    'approved': Icons.check_circle_outline,
+    'pending': Icons.access_time,
+    'rejected': FontAwesomeIcons.timesCircle
   };
   static Icon getIcon(String nombreIcono) {
     return Icon(

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:prueba_placeto_pay/controller/database.dart';
-import 'package:prueba_placeto_pay/controller/webService.dart';
-import 'package:prueba_placeto_pay/model/WebService/processTransaction.dart';
 import 'package:prueba_placeto_pay/model/cardInformation.dart';
 import 'package:prueba_placeto_pay/model/payment.dart';
 import 'package:prueba_placeto_pay/view/components/alertDialogComponent.dart';
@@ -16,6 +14,7 @@ class CardComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Se inicializa la información recibida para crear la card
     String state = this.paymentInformation.state;
     String cardNumber = this.paymentInformation.creditCard.cardNumber;
     String cardExpMonth = this.paymentInformation.creditCard.cardExpMonth;
@@ -32,10 +31,7 @@ class CardComponent extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(8.0),
         onTap: () {
-          //FocusScope.of(context).unfocus();
           Navigator.pushNamed(context, "splash");
-          /* Navigator.pushNamed(context, "splash"); */
-          //WebService.processTransactionPost(this.paymentInformation, context);
           DBControll.readPaymentWithTransactionResponse(
                   this.paymentInformation.pid)
               .then((processTransactionResponse) {
@@ -68,22 +64,55 @@ class CardComponent extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Text(state,
-                      style: state == Globals.strSuccesState
-                          ? StylesElements.tsBoldGreenSucces
+                  // Icono del estado, en caso de tardar el proceso de transacción pone un circular progress
+                  Padding(
+                    padding: EdgeInsets.only(right: 11),
+                    child: IconTheme(
+                      data: new IconThemeData(
+                        size: 20,
+                        color: state == Globals.strSuccesState
+                            ? StylesElements.colorSucces
+                            : state == Globals.strPendingState
+                                ? StylesElements.colorPending
+                                : state == Globals.strRejectedState
+                                    ? StylesElements.colorFail
+                                    : StylesElements.colorPrimary,
+                      ),
+                      child: state == Globals.strSuccesState
+                          ? StylesElements.getIcon(Globals.strApprovedIcon)
                           : state == Globals.strPendingState
-                              ? StylesElements.tsBoldOrangePending
+                              ? StylesElements.getIcon(Globals.strPendingIcon)
                               : state == Globals.strRejectedState
-                                  ? StylesElements.tsBoldRedFail
-                                  : StylesElements.tsNormalBlack),
+                                  ? StylesElements.getIcon(
+                                      Globals.strRejectedIcon)
+                                  : Container(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                StylesElements.colorPrimary),
+                                      ),
+                                    ),
+                    ),
+                  ),
                 ],
               ),
               SizedBox(height: 5),
               Padding(
                 padding: EdgeInsets.only(left: 30),
-                child: Text(
-                  CreditCard.cardNumberFormat(cardNumber),
-                  style: StylesElements.tsNormalBlack,
+                child: Row(
+                  children: <Widget>[
+                    Text("N° Tarjeta:",
+                        textAlign: TextAlign.right,
+                        style: StylesElements.tsBoldBlack),
+                    SizedBox(width: 15),
+                    Text(
+                      CreditCard.cardNumberFormat(cardNumber),
+                      style: StylesElements.tsNormalBlack,
+                    ),
+                  ],
                 ),
               ),
               SizedBox(height: 4),
@@ -91,14 +120,30 @@ class CardComponent extends StatelessWidget {
                 padding: EdgeInsets.only(left: 30),
                 child: Row(
                   children: <Widget>[
-                    Text(
-                      "$cardExpMonth/$cardExpYear",
-                      style: StylesElements.tsNormalBlack,
+                    Row(
+                      children: <Widget>[
+                        Text("Fecha exp:",
+                            textAlign: TextAlign.right,
+                            style: StylesElements.tsBoldBlack),
+                        SizedBox(width: 15),
+                        Text(
+                          "$cardExpMonth/$cardExpYear",
+                          style: StylesElements.tsNormalBlack,
+                        ),
+                      ],
                     ),
-                    SizedBox(width: 75),
-                    Text(
-                      cardCVV,
-                      style: StylesElements.tsNormalBlack,
+                    SizedBox(width: 27),
+                    Row(
+                      children: <Widget>[
+                        Text("CVV:",
+                            textAlign: TextAlign.right,
+                            style: StylesElements.tsBoldBlack),
+                        SizedBox(width: 15),
+                        Text(
+                          cardCVV,
+                          style: StylesElements.tsNormalBlack,
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -117,6 +162,7 @@ class CardComponent extends StatelessWidget {
               SizedBox(height: 5),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   Expanded(
                     child: Padding(
@@ -124,24 +170,43 @@ class CardComponent extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(name, style: StylesElements.tsNormalBlack),
-                          SizedBox(height: 4),
-                          Wrap(
-                            alignment: WrapAlignment.spaceBetween,
-                            direction: Axis.horizontal,
-                            spacing: 15,
+                          Row(
                             children: <Widget>[
-                              Text(email, style: StylesElements.tsNormalBlack),
-                              Text(phone, style: StylesElements.tsNormalBlack)
+                              Text("Nombre:",
+                                  textAlign: TextAlign.right,
+                                  style: StylesElements.tsBoldBlack),
+                              SizedBox(width: 15),
+                              Text(name, style: StylesElements.tsNormalBlack),
                             ],
                           ),
+                          SizedBox(height: 2),
+                          Row(
+                            children: <Widget>[
+                              Text("Email:",
+                                  textAlign: TextAlign.right,
+                                  style: StylesElements.tsBoldBlack),
+                              SizedBox(width: 15),
+                              Text(email, style: StylesElements.tsNormalBlack),
+                            ],
+                          ),
+                          SizedBox(height: 4),
+                          Row(
+                            children: <Widget>[
+                              Text("N° celular:",
+                                  textAlign: TextAlign.right,
+                                  style: StylesElements.tsBoldBlack),
+                              SizedBox(width: 15),
+                              Text(phone, style: StylesElements.tsNormalBlack),
+                            ],
+                          )
                         ],
                       ),
                     ),
                   ),
                   IconButton(
+                      alignment: Alignment.bottomCenter,
                       icon: StylesElements.getIcon(Globals.strRemoveIcon),
-                      color: Colors.red,
+                      color: StylesElements.colorFail,
                       visualDensity: VisualDensity.compact,
                       onPressed: () => showDialogDeletePayment(
                           context, this.paymentInformation.pid))

@@ -43,8 +43,7 @@ class _ResumePageState extends State<ResumePage> {
     return WillPopScope(
       onWillPop: () async {
         // Se captura la salida de la pestaña para saltar la pagina de splash
-        Navigator.pop(context);
-        Navigator.pop(context);
+        Navigator.pushNamedAndRemoveUntil(context, "request", (route) => false);
         return true;
       },
       child: Scaffold(
@@ -65,6 +64,7 @@ class _ResumePageState extends State<ResumePage> {
     );
   }
 
+  // Estructura para mostrar la información personal
   Widget personalInformationWidget() {
     return Column(
       children: <Widget>[
@@ -89,6 +89,7 @@ class _ResumePageState extends State<ResumePage> {
     );
   }
 
+// Estructura para mostrar la información del pago
   Widget paymentInformationWidget() {
     return Column(
       children: <Widget>[
@@ -121,6 +122,7 @@ class _ResumePageState extends State<ResumePage> {
     );
   }
 
+  // Estructura para mostrar la que retorna el servicio
   Widget transactionProcessInformationWidget() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -174,6 +176,7 @@ class _ResumePageState extends State<ResumePage> {
     );
   }
 
+  // Estructura vertical reutilizable.
   Widget informationStructureWidget({String title, String content}) {
     return Padding(
       padding: EdgeInsets.only(bottom: 5),
@@ -190,7 +193,7 @@ class _ResumePageState extends State<ResumePage> {
           Expanded(
               flex: 3,
               child: Text(
-                content,
+                content == null ? "-" : content == 'null' ? "-" : content,
                 textAlign: TextAlign.left,
                 style: title == "Estado"
                     ? styleForState()
@@ -201,6 +204,7 @@ class _ResumePageState extends State<ResumePage> {
     );
   }
 
+  // Estilo del estado del pago.
   TextStyle styleForState() {
     String state = widget.processTransactionResponse.paymentInformation.state;
     if (state == Globals.strSuccesState) {

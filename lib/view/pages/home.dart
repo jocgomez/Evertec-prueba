@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
 
   // Variables para el medio de pago
   String cardCVVErrorMessage = "Escriba el CVV de la terjeta.";
+  String cardExpDateErrorMessage = "Escriba la fecha de expiración";
   String cardNumber = "", cardExpMonth = "", cardExpYear = "", cardCvv = "";
   bool isCardNumberIncomplete = false,
       iscardMonthIncomplete = false,
@@ -263,10 +264,11 @@ class _HomePageState extends State<HomePage> {
               true,
               Globals.strDateIcon,
               isCardExpDateIncomplete,
-              "Escriba la fecha de expiración",
+              cardExpDateErrorMessage,
               () {}),
           onChanged: (value) {
             if (value.length < 1) {
+              cardExpDateErrorMessage = "Escriba la fecha de expiración";
               cardExpMonth = null;
               cardExpYear = null;
             } else if (value.length < 3) {
@@ -286,6 +288,21 @@ class _HomePageState extends State<HomePage> {
                 validateFieldInformation(cardExpMonth, iscardMonthIncomplete);
             isCardYearIncomplete =
                 validateFieldInformation(cardExpYear, isCardYearIncomplete);
+
+            // Se valida que las fechas de expiración esten bien
+            if (int.parse(cardExpMonth) > 12) {
+              iscardMonthIncomplete = true;
+              cardExpDateErrorMessage = "Fecha de expiración inválida";
+            } else {
+              iscardMonthIncomplete = false;
+            }
+            DateTime today = new DateTime.now();
+            if (int.parse("20" + cardExpYear) < today.year) {
+              isCardYearIncomplete = true;
+              cardExpDateErrorMessage = "Fecha de expiración inválida";
+            } else {
+              isCardYearIncomplete = false;
+            }
 
             // Si fecha o año esta incompleto, se muestra error
             if (isCardYearIncomplete == false &&
@@ -342,6 +359,21 @@ class _HomePageState extends State<HomePage> {
         validateFieldInformation(cardExpYear, iscardMonthIncomplete);
     isCardCvvIncomplete =
         validateFieldInformation(cardCvv, isCardCvvIncomplete);
+
+    // Se valida que las fechas de expiración esten bien
+    if (int.parse(cardExpMonth) > 12) {
+      iscardMonthIncomplete = true;
+      cardExpDateErrorMessage = "Fecha de expiración inválida";
+    } else {
+      iscardMonthIncomplete = false;
+    }
+    DateTime today = new DateTime.now();
+    if (int.parse("20" + cardExpYear) < today.year) {
+      isCardYearIncomplete = true;
+      cardExpDateErrorMessage = "Fecha de expiración inválida";
+    } else {
+      isCardYearIncomplete = false;
+    }
 
     // Se valida que el mes y año de expiración esten completos
     if (iscardMonthIncomplete || isCardYearIncomplete) {
