@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CardMonthInputFormatter extends TextInputFormatter {
+  // Formato para el campo de texto de la fecha de expiración
+  // para añadir un / entre el mes y el año
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {

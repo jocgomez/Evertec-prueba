@@ -46,7 +46,6 @@ class _SplashPageState extends State<SplashPage> {
               start == 0
                   ? () {
                       return Column(children: <Widget>[
-                        /* SizedBox(height: 100), */
                         Text(
                             "Si la petición tarda mucho, puedes volver al inicio.\nUna vez se obtenga resultado se actualizará el pago respectivo.",
                             style: StylesElements.tsNormalBlack,

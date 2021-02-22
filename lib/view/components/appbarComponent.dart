@@ -11,6 +11,7 @@ class AppbarComponent extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Componente de la barra superior, el titulo es variable
     return AppBar(
       iconTheme: IconThemeData(
         color: Colors.white, //change your color here

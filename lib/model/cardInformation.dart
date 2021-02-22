@@ -1,4 +1,5 @@
 class CreditCard {
+  // Objeto con la información de la tarjeta de credito, se llena en el formulario
   String cardNumber;
   String cardExpMonth;
   String cardExpYear;
@@ -7,6 +8,7 @@ class CreditCard {
   CreditCard(
       this.cardNumber, this.cardExpMonth, this.cardExpYear, this.cardCVV);
 
+  // Se establece el formato del numero de la tarjeta, espacio cada 4 digitos
   static String cardNumberFormat(String text) {
     var buffer = new StringBuffer();
     for (int i = 0; i < text.length; i++) {

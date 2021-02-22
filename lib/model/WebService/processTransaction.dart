@@ -1,5 +1,7 @@
 import 'package:prueba_placeto_pay/model/payment.dart';
 
+// Objeto que se obtiene a partir de la respuesta del servicio web, se llena con toda la información de la respuesta
+// y la información del pago, que incluye la información personal y la información de la tarjeta
 class ProcessTransactionResponse {
   String transactionDate;
   String reference;

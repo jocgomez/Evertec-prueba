@@ -24,6 +24,7 @@ class CardComponent extends StatelessWidget {
     String email = this.paymentInformation.personalInformation.email;
     String phone = this.paymentInformation.personalInformation.phone;
 
+    // Componente que posee la estructura gráfica de la card, se pone la información enviada desde solicitudes
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
       elevation: 7.0,

@@ -38,6 +38,7 @@ class _RequestPageState extends State<RequestPage> {
   Widget requestPaymentsCardsWidget() {
     return Expanded(
         child: StreamBuilder(
+            // Se consultan las solicitudes realizadas de la bd
             stream: DBControll.readAllPaymentDB(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -52,6 +53,7 @@ class _RequestPageState extends State<RequestPage> {
                   shrinkWrap: true,
                   itemCount: length,
                   itemBuilder: (context, index) {
+                    // Se obtiene la información de cada solicitud para crear su respectivo objeto
                     final DocumentSnapshot doc = snapshot.data.documents[index];
                     PersonalInformation personalInformation =
                         new PersonalInformation(doc.data["name"],
@@ -67,6 +69,7 @@ class _RequestPageState extends State<RequestPage> {
                         creditCardInformation,
                         doc.data["state"]);
 
+                    // Para cada solicitud se crea un componente tarjeta
                     return CardComponent(
                         paymentInformation: paymentInformation);
                   });

@@ -142,27 +142,6 @@ class DBControll {
         .document(Globals.userInstance.uid)
         .collection("payments")
         .snapshots();
-    /* .getDocuments()
-        .then((value) {
-      if (value.documents.length != 0) {
-        value.documents.forEach((element) {
-          if (element.exists) {
-            PersonalInformation personalInformation = new PersonalInformation(
-                element.data["name"],
-                element.data["email"],
-                element.data["phone"]);
-            CreditCard creditCard = new CreditCard(
-                element.data["cardNumber"],
-                element.data["cardExpMonth"],
-                element.data["cardExpYear"],
-                element.data["cardCVV"]);
-
-            payment = new Payment(
-                element.documentID, personalInformation, creditCard);
-          }
-        });
-      }
-    }); */
   }
 
   // Se elimina el pago realizado

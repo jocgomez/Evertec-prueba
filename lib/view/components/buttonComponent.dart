@@ -15,6 +15,7 @@ class ButtonComponent extends StatelessWidget {
   final Color borderColor;
   final VoidCallback function;
 
+  // Componente atómico del botón con parámetros variables
   Widget build(BuildContext context) {
     return RaisedButton(
         color: this.color,

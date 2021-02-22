@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:crypto/crypto.dart';
 import 'package:prueba_placeto_pay/view/utils/globals.dart';
 
+// Objeto para la creación de la autenticación
 class AuthWS {
   String login;
   String tranKey;

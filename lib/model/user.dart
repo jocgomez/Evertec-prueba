@@ -1,4 +1,5 @@
 class User {
+  // Objeto usuario con su respectivo constructor
   String uid;
   String username;
   String password;

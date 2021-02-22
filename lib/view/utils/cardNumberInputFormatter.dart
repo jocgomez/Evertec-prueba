@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CardNumberInputFormatter extends TextInputFormatter {
+  // Formato para el campo de texto del numero de la tarjeta, añadir un espacio cada 4 digitos
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {

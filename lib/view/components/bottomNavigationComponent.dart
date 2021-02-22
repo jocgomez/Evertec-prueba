@@ -10,6 +10,7 @@ class BottomNavigationComponent extends StatefulWidget {
       _BottomNavigationElementState();
 }
 
+// Componente del menú de navegación inferior para movernos entre el formulario y las solicitudes
 class _BottomNavigationElementState extends State<BottomNavigationComponent> {
   @override
   Widget build(BuildContext context) {

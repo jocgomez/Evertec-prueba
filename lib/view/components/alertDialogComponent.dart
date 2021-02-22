@@ -24,6 +24,7 @@ class AlertDialogComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Componente atómico para la ventana emergente con parámetros variables como el # de botones y la funcion de cada uno de estos
     return AlertDialog(
       title: Text(this.titulo, style: StylesElements.tsBoldOrange18),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
